@@ -20,8 +20,10 @@ export const PlaylistDetailModal: React.FC<PlaylistDetailModalProps> = ({
   if (!playlist) return null;
 
   const isPlaylist = 'tracks' in playlist;
+  const playlistTitle = isPlaylist ? playlist.title : playlist.name;
+  const playlistSubtitle = isPlaylist ? playlist.subtitle : (playlist.subtitle ?? 'Playlist');
   const playlistTracks = isPlaylist
-    ? (playlist as Playlist).tracks
+    ? playlist.tracks
     : tracks.filter(t => t.genre.toLowerCase().includes(playlist.name.toLowerCase()));
 
   return (
@@ -29,7 +31,7 @@ export const PlaylistDetailModal: React.FC<PlaylistDetailModalProps> = ({
       <div className="relative w-full max-w-md h-[85vh] max-h-[750px] rounded-[32px] bg-white/90 backdrop-blur-2xl border border-white/90 shadow-2xl overflow-hidden flex flex-col">
         {/* Banner */}
         <div className="relative h-52 w-full">
-          <img src={playlist.coverUrl} alt={playlist.title || playlist.name} className="w-full h-full object-cover" />
+          <img src={playlist.coverUrl} alt={playlistTitle} className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
           
           <button
@@ -42,10 +44,10 @@ export const PlaylistDetailModal: React.FC<PlaylistDetailModalProps> = ({
           <div className="absolute bottom-4 left-6 right-6 flex items-end justify-between">
             <div>
               <span className="text-[10px] font-bold uppercase tracking-wider text-purple-300">
-                {(playlist as Playlist).subtitle || (playlist as GenreCategory).subtitle || 'Playlist'}
+                {playlistSubtitle}
               </span>
               <h2 className="text-2xl font-extrabold text-white leading-tight">
-                {(playlist as Playlist).title || (playlist as GenreCategory).name}
+                {playlistTitle}
               </h2>
             </div>
 
